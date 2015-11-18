@@ -1,0 +1,33 @@
+Breakdown of work:
+
+READ OVER: https\://github.com/disqus/sharding-example/blob/master/sqlshards/db/shards/routers.py FOR SOURCE CODE ON SIMILAR IMPLEMENTATION
+
+Within db/shards/:
+
+RENE & JAMES
+fields.py
+    - Where our overwritten fields go, i.e. how we decide to create our primary keys (BigIntegerField)
+    - This is the bulk of our work
+
+RENE & JAMES
+helpers.py
+    - Any helper functions we may need that we don't want to include elsewhere
+
+EVERYONE
+manager.py
+    - This is where all our QuerySet modifications go.
+    - QuerySet helps partitioning by field in the database
+        - Does so by providing hints about what fields are being queried
+
+CASEY & ANDREW
+models.py
+    - Our partitioned ForeignKey goes here
+    - So do the sharding options for the databases
+    - This is the bulk of our work
+
+mysql.py
+    - Where our SQL functions will go
+
+ANDREW
+routers.py
+    - Where the sharded info is routed to the correct databases
