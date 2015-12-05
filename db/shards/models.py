@@ -8,7 +8,7 @@ from django.db.models.fields.related import ForeignKey
 class ShardedForeignKey(ForeignKey):
     def __init__(self, ... , **kwargs):
 
-class LogicalShardOptions():
+class LogicalShardOptions(object):
     def __init__(self, physical_shard, shard_num):
         self.physical_shard = physical_shard
         self.shard_num = shard_num
@@ -34,7 +34,7 @@ class LogicalShardOptions():
         physical_shard = self.physical_shard
 
 
-class PhysicalShardOptions():
+class PhysicalShardOptions(object):
     def __init__(self, options, logical_shards=[]):
         self.options = options # Options of the physical shard
         self.logical_shards = logical_shards # Logical Shard info for cluster
