@@ -6,7 +6,7 @@ from django.db.models import Model
 from django.db.models.fields.related import ForeignKey
 
 class ShardedForeignKey(ForeignKey):
-    def __init--(self, ... , **kwargs):
+    def __init__(self, ... , **kwargs):
 
 class LogicalShardOptions():
     def __init__(self, physical_shard, shard_id):
