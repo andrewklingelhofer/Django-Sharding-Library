@@ -9,9 +9,9 @@ class ShardedForeignKey(ForeignKey):
     def __init__(self, ... , **kwargs):
 
 class LogicalShardOptions():
-    def __init__(self, physical_shard, shard_id):
+    def __init__(self, physical_shard, shard_num):
         self.physical_shard = physical_shard
-        self.shard_id = shard_id
+        self.shard_num = shard_num
         self.name = None # Name of particular shard
         self.model = None # Type of model this shard contains
 
