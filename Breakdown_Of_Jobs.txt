@@ -1,7 +1,5 @@
 Breakdown of work:
 
-READ OVER: https\://github.com/disqus/sharding-example/blob/master/sqlshards/db/shards/routers.py FOR SOURCE CODE ON SIMILAR IMPLEMENTATION
-
 Within db/shards/:
 
 RENE & JAMES
