@@ -7,9 +7,12 @@ from django.db.models.fields.related import ForeignKey
 
 class ShardedForeignKey(ForeignKey):
     # This should be pretty much similar to Django's ForeignKey, except 
-    # It will also work similarly to ManyToManyField, because our ForeignKey isn't a ForeignKey, it's
-    # a sharding id and connector to all other aspects of the databases. In order to find a partition,
-    # you must know it's id, therefore everything in some way can be connected to another. This needs to 
+    # It will also work similarly to ManyToManyField, 
+    # because our ForeignKey isn't a ForeignKey, it's
+    # a sharding id and connector to all other aspects 
+    # of the databases. In order to find a partition,
+    # you must know it's id, therefore everything 
+    # in some way can be connected to another. This needs to 
     # be clearly defined in the definitions here
     def __init__(self, to, on_delete=None, related_name=None, related_query_name=None, limit_choices+to=None, parent_link=False, to_field=None, db_constraint=True , **kwargs):
         try:
