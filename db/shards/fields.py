@@ -31,17 +31,17 @@ class ParentKey(ForeignKey):
 
     """Defines a child of a sharded tree hierarchy"""
 
-    def __init__(self, parent, **kwargs):
+    def __init__(self, **kwargs):
         """
 
         :parent: Must have a RootKey field defined
 
         """
-        self._parent = parent
-        kwargs['to'] = self.parent
+        self._parent = kwargs['to']
 
         ForeignKey.__init__(self, **kwargs)
 
+        # Check if the related model is defined as a RootKey
         sharding_function = getattr(self.rel, 'sharding_function', None)
         if sharding_function is None:
             # TODO: Create specialized exceptions
