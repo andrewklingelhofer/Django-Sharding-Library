@@ -5,7 +5,7 @@ class ShardingRouter(objects):
     def db_for_read(self, model, **hints):
         # Returns the database based on which database the info
         # should go to
-        sharding_info = self.getattr(model, 'sharding_info', None)
+        sharding_function = self.getattr(model, '_sharding_function', None)
         if sharding_info:
             # If sharding_info exists, make sure it's a logical shard
             if sharding_info.is_logical_shard:
