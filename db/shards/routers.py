@@ -1,7 +1,8 @@
 # Routes sharded data to correct database based on sharding id
 from models import logical_to_physical, shard
+from helpers import find_shard_key
 
-class ShardingRouter(object):
+class ShardedRouter(object):
 
     def get_database(self, shard_key):
         return logical_to_physical(shard(shard_key))
@@ -9,11 +10,19 @@ class ShardingRouter(object):
     def db_for_read_or_write(self, model, **hints):
         # Returns the database based on which database the info
         # should go to
-        shard_key = self.getattr(model, '_shard', None)
-        if shard_key:
-            return get_database(shard_key)
-        else:
-            raise ValueError('shard_key does not exist, can\'t be queried')
+        db = None
+        try:
+            instance = hints['instance']
+            shard_key = instance.shard_key
+            db = self.get_database(shard_key)
+        except KeyError:
+            print "No instance in hints"
+            try:
+                db = self.get_database(hints['shard_key'])
+            except KeyError:
+                print "No shard_key in hints"
+        print "Returning", db
+        return db
         
     def db_for_read(self, model, **hints):
         return self.db_for_read_or_write(model, **hints)
