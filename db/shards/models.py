@@ -1,8 +1,10 @@
-from django.db.models.fields import Field
-from django.db.models import ForeignKey
+from django.db import models
+
+from managers import ShardedManager
+from helpers import find_shard_key
 
 
-class RootKey(Field):
+class RootKey(models.Field):
 
     """Defines the root of a sharded tree hierarchy"""
 
@@ -27,7 +29,7 @@ class RootKey(Field):
         return self._sharding_function
 
 
-class ParentKey(ForeignKey):
+class ParentKey(models.ForeignKey):
 
     """Defines a child of a sharded tree hierarchy"""
 
@@ -39,7 +41,7 @@ class ParentKey(ForeignKey):
         """
         self._parent = kwargs['to']
 
-        ForeignKey.__init__(self, **kwargs)
+        models.ForeignKey.__init__(self, **kwargs)
 
         # Check if the related model is defined as a RootKey
         sharding_function = getattr(self.rel, 'sharding_function', None)
@@ -53,3 +55,24 @@ class ParentKey(ForeignKey):
     @property
     def parent(self):
         return self._parent
+
+
+class ShardedModel(models.Model):
+    # Abstract base class
+
+    objects = ShardedManager()
+    shards = []
+
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
+        shard_key = find_shard_key(self)
+        if shard_key:
+            setattr(self, '_shard', shard_key)
+        else:
+            raise Exception("Shard Key was none")
+        self.__class__.shards.append(self._shard)
+        super(ShardedModel, self).save(force_insert=force_insert, force_update=force_update,
+                                       using=using, update_fields=update_fields)
+
+    class Meta:
+        abstract = True
