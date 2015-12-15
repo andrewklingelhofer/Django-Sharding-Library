@@ -1,3 +1,4 @@
+from itertools import cycle
 from django.db import models
 
 from managers import ShardedManager
@@ -62,6 +63,10 @@ class ShardedModel(models.Model):
 
     objects = ShardedManager()
     shards = []
+    mapping = []
+    # mock values
+    logical = 16
+    physical = ['db1', 'db2']
 
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
@@ -73,6 +78,18 @@ class ShardedModel(models.Model):
         self.__class__.shards.append(self._shard)
         super(ShardedModel, self).save(force_insert=force_insert, force_update=force_update,
                                        using=using, update_fields=update_fields)
+
+    @classmethod
+    def shard(cls, shard_key):
+        return shard_key % ShardedModel.logical
+
+    @classmethod
+    def logical_to_physical(cls, logical):
+        if len(cls.mapping) == 0:
+            cycler = cycle(cls.physical)
+            while len(cls.mapping) < cls.logical:
+                cls.mapping.append(next(cycler))
+        return cls.mapping[logical]
 
     class Meta:
         abstract = True
