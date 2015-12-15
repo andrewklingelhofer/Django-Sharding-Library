@@ -15,6 +15,9 @@ class ShardedRouter(object):
             instance = hints['instance']
             shard_key = instance.shard_key
             db = self.get_database(shard_key)
+            print "instance:", instance
+            print "shard_key:", shard_key
+            print "db:", db
         except KeyError:
             print "No instance in hints"
             try:
