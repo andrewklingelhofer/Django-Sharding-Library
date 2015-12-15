@@ -21,7 +21,7 @@ class ShardedManager(models.Manager):
         return getattr(self._get_queryset(instance), 'all')()
 
     def filter(self, instance, *args, **kwargs):
-        return getattr(self._get_queryset(instance), '')(*args, **kwargs)
+        return getattr(self._get_queryset(instance), 'filter')(*args, **kwargs)
 
     def get(self, instance, *args, **kwargs):
-        return getattr(self._get_queryset(instance), 'all')(*args, **kwargs)
+        return getattr(self._get_queryset(instance), 'get')(*args, **kwargs)
