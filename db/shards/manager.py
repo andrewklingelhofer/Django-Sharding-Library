@@ -12,7 +12,7 @@ class ShardedManager(models.Manager):
     def _get_queryset(self, instance):
         hints = self._hints
         if hints:
-            hints['shard_key': find_shard_key(instance)]
+            hints['shard_key'] = find_shard_key(instance)
         else:
             hints = {'shard_key': find_shard_key(instance)}
         return self._queryset_class(model=self.model, hints=hints)
