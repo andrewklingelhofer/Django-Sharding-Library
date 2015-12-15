@@ -34,7 +34,8 @@ class ShardedRouter(object):
 
     def allow_relation(self, obj1, obj2, **hints):
         # Not sure if we need this
+        return True
             
     def allow_migrate(self, db, app_label, model=None, **hints):
         # Not sure if we need this
-
+        return True
