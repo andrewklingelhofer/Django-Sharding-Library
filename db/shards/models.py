@@ -1,7 +1,7 @@
 from itertools import cycle
 from django.db import models
 
-from managers import ShardedManager
+from manager import ShardedManager
 from helpers import find_shard_key
 
 
