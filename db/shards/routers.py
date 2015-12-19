@@ -1,4 +1,5 @@
 # Routes sharded data to correct database based on sharding id
+from models import ShardableModel
 from helpers import find_shard_key
 
 
@@ -10,18 +11,19 @@ class ShardedRouter(object):
     def db_for_read_or_write(self, model, **hints):
         # Returns the database based on which database the info
         # should go to
-        db = None
+        db = 'default'
         try:
             instance = hints['instance']
-            # check instance chached shard_key (on saves)
-            # before finding it by looping through fields
-            shard_key = getattr(instance, '_shard_key', None)
-            if shard_key is None:
-                shard_key = find_shard_key(instance)
-            db = self.get_database(model, shard_key)
-            print("instance:", instance)
-            print("shard_key:", shard_key)
-            print("db:", db)
+            if isinstance(instance, ShardableModel):
+                # check instance chached shard_key (on saves)
+                # before finding it by looping through fields
+                shard_key = getattr(instance, '_shard_key', None)
+                if shard_key is None:
+                    shard_key = find_shard_key(instance)
+                db = self.get_database(model, shard_key)
+                print("instance:", instance)
+                print("shard_key:", shard_key)
+                print("db:", db)
         except KeyError:
             print("No instance in hints")
             try:

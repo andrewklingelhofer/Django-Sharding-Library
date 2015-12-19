@@ -14,8 +14,12 @@ class ShardingAutoField(AutoField):
 
 
 class BigIntegerField(models.BigIntegerField):
-
-    # Turn this class mod into a decorator to handle arbitrary fields
     def __init__(self, sharding_root=False, *args, **kwargs):
         super(BigIntegerField, self).__init__(*args, **kwargs)
         self.sharding_root = sharding_root
+
+
+class ParentKey(models.ForeignKey):
+    def __init__(self, to, **kwargs):
+        super(ParentKey, self).__init__(to, **kwargs)
+        self.child_key = True
