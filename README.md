@@ -1,5 +1,5 @@
 # Django-Sharding-Library
-A work-in-progress sharding library for Django. Currently supports MySQL and PostgreSQL.
+A sharding library for Django. Currently supports MySQL and PostgreSQL.
 
 # How to use:
 
